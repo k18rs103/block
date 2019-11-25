@@ -1,2 +1,4 @@
 // This is a JavaScript file
 
+var appKey ="58c7da728493564e84d8f3f23056cafe76bf17339e2e3c49871c3e538e464f70";
+var clientKey ="3463e46fe7f23fcd977033e8c6c61bb647f9757775df1f01643a67b6c3691f31";
