@@ -1,8 +1,10 @@
 // This is a JavaScript file
 
 var ncmbController = {
-  APPLICATION_KEY:"YOUR_APPLICATION_KEY",
-  CLIENT_KEY:"YOUR_CLIENT_KEY",
+  APPLICATION_KEY:appKey,
+   CLIENT_KEY:clientKey,
+  //APPLICATION_KEY:"58c7da728493564e84d8f3f23056cafe76bf17339e2e3c49871c3e538e464f70",
+ // CLIENT_KEY:"3463e46fe7f23fcd977033e8c6c61bb647f9757775df1f01643a67b6c3691f31",
 
   ncmb:null,
   currentUser:null,
@@ -19,7 +21,7 @@ var ncmbController = {
     // [3]送信処理
     scoreData.save()
         .then(function (saved) {
-            // 順位を求める
+          // 順位を求める
 // ”score” フィールドの値が score より大きいものを取得
 Score.greaterThan("score", score)
     .count()    // 件数を結果に含める
@@ -41,11 +43,45 @@ Score.greaterThan("score", score)
             alert("スコア送信完了！\n今回の順位は #" + rank + " でした！");
         }
     })
-  })
+        })
        .catch(function(err){
             console.log(err);
         });
 },
+// ユーザー登録
+createUser: function() {
+    var self = this;
+
+    //適当なUUIDを作成
+    var uuid = self.uuid();
+
+    //ユーザークラスのインスタンスを作成
+    //userNameとパスワードにはuuidを設定
+    var user = new self.ncmb.User({userName:uuid, password:uuid});
+
+    //会員登録を行うメソッドを実行
+    user.signUpByAccount()
+        .then(function(user){
+            // 登録完了後ログイン
+            localStorage.setItem("userName", uuid);
+            alert("ユーザー登録に成功しました！");
+        })
+        .catch(function(err){
+            // userName が被った場合はエラーが返る
+            alert("ユーザー登録に失敗しました");
+        });
+},
+  uuid: function() {
+    var uuid ="", i, random;
+    for(i = 0; i < 32; i++) {
+      random = Math.random() * 16 | 0;
+    if(i == 8 || i == 12 || i == 16 || i == 20) {
+      uuid += "_"
+    }
+    uuid += (i == 12?4:(i == 16 ? (random & 3 | 8): random)).toString(16);
+    }
+    return uuid;
+  },
   init:function(screenSize) {
     
     var self = this;
