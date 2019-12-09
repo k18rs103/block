@@ -268,7 +268,7 @@ var BB = {
     endGame: function() {
         BB.gameState = GAMESTATE_STOP;
         vibrate();
-        ncmbController.sendScore(BB.score);
+        ncmbController.finishScore(BB.score);
     },
     
     // Game Clear
@@ -277,7 +277,7 @@ var BB = {
        // else alert("Cleared!");
         
         BB.gameState = GAMESTATE_STOP;
-        ncmbController.sendScore(BB.score);
+        ncmbController. finishScore(BB.score);
     }
 }
 
@@ -342,6 +342,7 @@ function init() {
     ncmbController.init(BB.screenSize);
     ncmbController.createUser();
     ncmbController.loginWithUUID();
+     ons.bootstrap();
 }
 
 

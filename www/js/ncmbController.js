@@ -146,6 +146,76 @@ refreshCurrentUser: function() {
                 console.log(err);
                 self.currentUser = null;
               });
+              user.signUpByAccount()
+
+},
+// ユーザー名登録フォームの表示
+showDisplayNameDialog: function() {
+    var self = this;
+
+    $("#mask").show();
+    // ダイアログを左右中央に表示する
+    $("#userEditWrapper").css("top", self.screenSize.height / 2 - 100);
+    $("#userEditWrapper").css("left", self.screenSize.width * 0.1);
+    $("#userEditWrapper").show();
+},
+
+// ユーザー名登録
+updateDisplayName: function(){
+    $("#userEditWrapper").hide();
+    $("#mask").hide();
+
+    // 入力した名前をカレントユーザーにセット
+    var name = $("#name").val();
+    this.currentUser.set("displayName", name);
+
+    // 会員情報の更新
+    return this.currentUser.update();
+},// ユーザー名登録フォームの表示
+showDisplayNameDialog: function() {
+    var self = this;
+
+    $("#mask").show();
+    // ダイアログを左右中央に表示する
+    $("#userEditWrapper").css("top", self.screenSize.height / 2 - 100);
+    $("#userEditWrapper").css("left", self.screenSize.width * 0.1);
+    $("#userEditWrapper").show();
+},
+// ユーザー名登録
+updateDisplayName: function(){
+    $("#userEditWrapper").hide();
+    $("#mask").hide();
+
+    // 入力した名前をカレントユーザーにセット
+    var name = $("#name").val();
+    this.currentUser.set("displayName", name);
+
+    // 会員情報の更新
+    return this.currentUser.update();
+},
+finishGame: function(score){
+    var self = this;
+
+    if(!self.currentUser){
+        self.loginWithUUID();
+    } else if(!self.currentUser.displayName){
+        // まだユーザー名を登録していない場合
+        self.showDisplayNameDialog();
+
+        $("#submit").on("click", function(){
+            self.updateDisplayName()
+                .then(function() {
+                    self.sendScore(score);
+                })
+                .catch(function(err) {
+                    console.log(err);
+                    alert("ユーザー名の登録に失敗しました");
+                });
+        });
+    } else {
+        // ユーザー名登録済：スコア送信
+        self.sendScore(score);
+    }
 },
   init:function(screenSize) {
     
